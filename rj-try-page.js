@@ -15,6 +15,10 @@ class RjTryPage extends HTMLElement {
       l.setAttribute('data-rj-fonts', '');
       document.head.appendChild(l);
     }
+    // Wix gives the host (and its wrapper) the fixed editor height; let the page grow with its content.
+    this.style.display = 'block';
+    this.style.height = 'auto';
+    if (this.parentElement) { this.parentElement.style.height = 'auto'; this.parentElement.style.minHeight = '0'; }
     const root = this.attachShadow({ mode: 'open' });
     root.innerHTML = '<style>' + CSS + '</style>' + HTML;
     root.addEventListener('click', (e) => {
@@ -40,3 +44,5 @@ class RjTryPage extends HTMLElement {
   }
 }
 if (!customElements.get('rj-try-page')) customElements.define('rj-try-page', RjTryPage);
+// Fallback: the Wix element may keep its default tag name, so answer to that too.
+if (!customElements.get('wix-default-custom-element')) customElements.define('wix-default-custom-element', class extends RjTryPage {});
